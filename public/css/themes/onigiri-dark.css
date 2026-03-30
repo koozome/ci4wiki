@@ -1,0 +1,17 @@
+/* Onigiri Night — dark */
+:root {
+  --wiki-border:        #474d54;
+  --wiki-table-border:  #474d54;
+  --wiki-table-even-bg: #2e3338;
+  --wiki-code-bg:       #2a2f35;
+  --wiki-code-border:   #474d54;
+  --wiki-muted:         #7a8899;
+  --wiki-accent:        #6dc1e7;
+  --color-blossom:      #6dc1e7;
+}
+body { background: #363b40; color: #b8bfc6; font-family: "M PLUS 1p", "Noto Sans JP", "Hiragino Sans", sans-serif; font-weight: 300; }
+a, a:visited { color: #6dc1e7; }
+a:hover { color: #a3d5fe; text-decoration: underline; }
+h1, h2, h3, h4, h5, h6 { color: #dedede; }
+code { background: #2a2f35; color: #b8bfc6; border: 1px solid #474d54; border-radius: 3px; padding: .1em .3em; }
+blockquote { border-left: 1px solid #474d54; color: #8f6f6f; background: transparent; }

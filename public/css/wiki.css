@@ -1,0 +1,262 @@
+/* Wiki 公開面カスタム */
+
+/* テーマ変数デフォルト値（テーマCSS で上書き） */
+:root {
+  --wiki-border:          #e0d6cc;
+  --wiki-table-border:    #d0d7de;
+  --wiki-table-even-bg:   #f6f8fa;
+  --wiki-code-bg:         #f6f8fa;
+  --wiki-code-border:     #d0d7de;
+  --wiki-muted:           #888;
+  --wiki-accent:          var(--color-blossom, #f5abcc);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --wiki-border:        #444;
+    --wiki-table-border:  #30363d;
+    --wiki-table-even-bg: #161b22;
+    --wiki-code-bg:       #161b22;
+    --wiki-code-border:   #30363d;
+    --wiki-muted:         #999;
+  }
+}
+
+
+/* リストスタイルをデフォルト無し、記事本文内のみ復元 */
+ul, ol {
+  list-style: none;
+  padding-left: 0;
+}
+.wiki-content ul {
+  list-style: disc;
+  padding-left: 2rem;
+}
+.wiki-content ol {
+  list-style: decimal;
+  padding-left: 2rem;
+}
+
+/* 見出しサイズ調整 */
+h1 {
+  font-size: 3.2rem;
+}
+h2 {
+  font-size: 2.4rem;
+}
+
+
+body {
+  max-width: 1100px;
+  padding: 0 1.5rem;
+}
+
+/* 最新記事カードのh4 */
+.wiki-grid aside h4 {
+  font-size: 1.8rem;
+  margin: 0 0 .2rem;
+}
+
+/* カテゴリー名 */
+.category-name {
+  font-size: 2.2rem;
+}
+
+/* ヘッダー */
+.site-header {
+  border-bottom: 1px solid var(--wiki-border);
+  padding-block: .5rem;
+  margin-bottom: 1.5rem;
+}
+.site-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .4rem;
+}
+.site-header-actions {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.site-header-actions li {
+  list-style: none;
+}
+.site-search {
+  margin: 0;
+}
+.site-search input {
+  margin: 0;
+  width: 100%;
+}
+
+/* フッター */
+footer.container-fluid {
+  border-top: 1px solid var(--wiki-border);
+  margin-top: 3rem;
+  padding-block: 1rem;
+  color: var(--wiki-muted);
+}
+
+/* パンくず */
+nav[aria-label="breadcrumb"] {
+  font-size: 1.4rem;
+}
+nav[aria-label="breadcrumb"] ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+  padding: 0;
+  margin-bottom: 1rem;
+  list-style: none;
+}
+
+nav[aria-label="breadcrumb"] ul li + li::before {
+  content: "›";
+  margin-right: .25rem;
+  color: var(--wiki-muted);
+}
+
+/* 記事本文内の画像・動画がはみ出さないよう制限 */
+.wiki-content img,
+.wiki-content video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* GitHub 準拠テーブル */
+.wiki-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1.6rem;
+  font-size: 1.4rem;
+}
+.wiki-content table th,
+.wiki-content table td {
+  border: 1px solid var(--wiki-table-border);
+  padding: .4rem .85rem;
+  text-align: left;
+}
+.wiki-content table thead th {
+  background: var(--wiki-table-even-bg);
+  font-weight: 600;
+}
+.wiki-content table tbody tr:nth-child(even) {
+  background: var(--wiki-table-even-bg);
+}
+
+/* コードブロック */
+.wiki-content pre:has(code.hljs) {
+  background: var(--wiki-code-bg);
+  border: 1px solid var(--wiki-code-border);
+  border-radius: .375rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+.wiki-content pre code.hljs {
+  background: none;
+  padding: 0;
+}
+
+/* 外部リンクアイコン（記事本文内のみ） */
+.wiki-content a[href^="http"]::after,
+.wiki-content a[href^="https"]::after {
+  content: "";
+  display: inline-block;
+  width: .85em;
+  height: .85em;
+  margin-left: .2em;
+  vertical-align: middle;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42L17.59 5H14V3zM5 5h6v2H7v10h10v-4h2v6H5V5z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42L17.59 5H14V3zM5 5h6v2H7v10h10v-4h2v6H5V5z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* 2カラムグリッド */
+.wiki-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+@media (max-width: 640px) {
+  .wiki-grid { grid-template-columns: 1fr; }
+
+  body {
+    padding: 0 .75rem;
+  }
+
+  /* テーブルを横スクロール */
+  .wiki-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* コードブロックのフォントを少し小さく */
+  .wiki-content pre {
+    font-size: 1.2rem;
+  }
+
+  /* h1 を少し縮小 */
+  h1 {
+    font-size: 2.4rem;
+  }
+}
+
+/* カテゴリーページ 階層表示 */
+.cat-section-heading {
+  margin-left: calc((var(--d) - 1) * 2rem);
+  padding-left: .6rem;
+  border-left: 3px solid var(--wiki-border);
+  color: var(--wiki-muted);
+  font-size: 1.8rem;
+  margin-top: 2rem;
+  margin-bottom: .5rem;
+}
+.cat-section-articles {
+  margin-left: calc(var(--d) * 2rem);
+}
+
+/* ミュートテキスト */
+.muted {
+  color: var(--wiki-muted);
+  font-size: 1.3rem;
+}
+
+/* トップページ カテゴリーツリー */
+.category-tree {
+  margin-bottom: 1.5rem;
+}
+.category-item {
+  margin-bottom: .5rem;
+}
+.category-name {
+  font-weight: 600;
+}
+.category-children {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  margin-top: .15rem;
+  margin-left: 1.25rem;
+  font-size: 1.6rem;
+}
+.category-children a {
+  color: var(--wiki-muted);
+}
+.category-children a:hover {
+  color: var(--wiki-accent);
+}
+
+/* Wikiリンク */
+.wiki-broken {
+  color: #cc3333;
+  text-decoration: line-through;
+  cursor: help;
+}
+
+.wiki-draft {
+  opacity: .6;
+}

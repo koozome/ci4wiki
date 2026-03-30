@@ -1,0 +1,5 @@
+/* wiki.css の body max-width を管理画面では解除 */
+body {
+  max-width: none !important;
+  padding: 0;
+}
