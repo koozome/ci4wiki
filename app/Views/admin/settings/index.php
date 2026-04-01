@@ -51,6 +51,18 @@
           <?php endforeach ?>
         </select>
       </div>
+      <div class="mb-3">
+        <label class="form-label">管理画面テーマ</label>
+        <?php $adminTheme = $settings['admin_theme'] ?? 'auto'; ?>
+        <div class="d-flex gap-3">
+          <?php foreach (['auto' => 'Auto（システム連動）', 'light' => 'ライト', 'dark' => 'ダーク'] as $val => $label): ?>
+          <label class="form-check">
+            <input class="form-check-input" type="radio" name="admin_theme" value="<?= $val ?>"<?= $adminTheme === $val ? ' checked' : '' ?>>
+            <span class="form-check-label"><?= $label ?></span>
+          </label>
+          <?php endforeach ?>
+        </div>
+      </div>
       <button type="submit" class="btn btn-primary">保存</button>
     </form>
   </div>

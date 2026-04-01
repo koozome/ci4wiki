@@ -60,7 +60,11 @@ class Users extends AdminController
         }
 
         if ($this->request->getMethod() === 'POST') {
-            $user->fill(['password' => $this->request->getPost('password')]);
+            $password = $this->request->getPost('password');
+            if ($password !== $this->request->getPost('password_confirm')) {
+                return redirect()->back()->with('errors', ['パスワードが一致しません']);
+            }
+            $user->fill(['password' => $password]);
             auth()->getProvider()->save($user);
             return redirect()->to("admin/users/edit/{$id}")->with('message', 'パスワードを変更しました');
         }
@@ -77,7 +81,10 @@ class Users extends AdminController
 
     private function saveNewUser(): \CodeIgniter\HTTP\RedirectResponse
     {
-        $post  = $this->request->getPost(['username', 'email', 'password', 'role']);
+        $post  = $this->request->getPost(['username', 'email', 'password', 'password_confirm', 'role']);
+        if ($post['password'] !== $post['password_confirm']) {
+            return redirect()->back()->withInput()->with('errors', ['パスワードが一致しません']);
+        }
         $users = auth()->getProvider();
 
         $user = new User([

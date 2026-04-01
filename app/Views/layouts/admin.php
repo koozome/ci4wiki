@@ -1,6 +1,14 @@
 <!DOCTYPE html>
+<?php $adminTheme = $siteSettings['admin_theme'] ?? 'auto'; ?>
 <html lang="ja">
 <head>
+<script>
+(function(){
+  var t='<?= $adminTheme ?>';
+  if(t==='auto') t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  document.documentElement.setAttribute('data-bs-theme',t);
+})();
+</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= esc($pageTitle ?? '管理画面') ?> - <?= esc($siteSettings['site_name'] ?? 'Wiki') ?></title>

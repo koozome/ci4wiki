@@ -23,6 +23,10 @@
             <label class="form-label required" for="password">新しいパスワード</label>
             <input type="password" id="password" name="password" class="form-control" required minlength="8">
           </div>
+          <div class="mb-3">
+            <label class="form-label required" for="password_confirm">パスワード確認</label>
+            <input type="password" id="password_confirm" name="password_confirm" class="form-control" required minlength="8">
+          </div>
         </div>
         <div class="col-lg-4">
           <div class="card">
