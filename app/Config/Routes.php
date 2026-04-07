@@ -15,6 +15,14 @@ $routes->get('attachment/(:num)/(:any)', 'Wiki::attachment/$1/$2');
 // Shield 認証ルート
 service('auth')->routes($routes);
 
+// マイページ（要ログイン）
+$routes->group('mypage', ['filter' => 'session'], static function (RouteCollection $routes): void {
+    $routes->get('/', 'Mypage::index');
+    $routes->post('2fa/enable-email', 'Mypage::enableEmail');
+    $routes->match(['GET', 'POST'], '2fa/setup-totp', 'Mypage::totpSetup');
+    $routes->post('2fa/disable', 'Mypage::disable');
+});
+
 // 管理ルート（要ログイン）
 $routes->group('admin', ['filter' => 'session'], static function (RouteCollection $routes): void {
     $routes->get('/', 'Admin\Dashboard::index');

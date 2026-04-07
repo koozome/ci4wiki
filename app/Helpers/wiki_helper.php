@@ -36,6 +36,17 @@ if (! function_exists('parse_wiki_links')) {
                 $article = $article->where('wiki_articles.slug', $articleSlug)->first();
 
                 if ($article === null) {
+                    if (auth()->loggedIn()) {
+                        $u = auth()->user();
+                        if ($u->inGroup('editor') || $u->inGroup('moderator') || $u->inGroup('administrator')) {
+                            $params = ['slug' => $articleSlug];
+                            if ($categorySlug !== null) {
+                                $params['category_slug'] = $categorySlug;
+                            }
+                            $createUrl = site_url('admin/articles/add?' . http_build_query($params));
+                            return '<a href="' . $createUrl . '" class="wiki-broken wiki-broken-create" title="記事が存在しません（クリックで作成）">' . esc($inner) . '</a>';
+                        }
+                    }
                     return '<span class="wiki-broken" title="記事が見つかりません">' . esc($inner) . '</span>';
                 }
 
