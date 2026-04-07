@@ -12,9 +12,35 @@ class ArticleModel extends Model
     protected $returnType    = 'array';
     protected $useTimestamps = true;
     protected $allowedFields = [
-        'category_id', 'slug', 'title', 'content', 'status',
+        'category_id', 'slug', 'title', 'content', 'status', 'view_role',
         'published_at', 'view_count', 'owner', 'editor',
     ];
+
+    /** ロール階層（低→高） */
+    public const ROLE_LEVELS = [
+        'contributor'   => 1,
+        'editor'        => 2,
+        'moderator'     => 3,
+        'administrator' => 4,
+    ];
+
+    /**
+     * 閲覧可能な記事のみに絞り込む。
+     * $userRole: ログイン中ユーザーの最上位ロール（未ログインは null）
+     */
+    public function visibleTo(?string $userRole): static
+    {
+        if ($userRole !== null && isset(self::ROLE_LEVELS[$userRole])) {
+            $level   = self::ROLE_LEVELS[$userRole];
+            $allowed = array_keys(array_filter(self::ROLE_LEVELS, fn ($l) => $l <= $level));
+            return $this->groupStart()
+                ->where('wiki_articles.view_role IS NULL', null, false)
+                ->orWhereIn('wiki_articles.view_role', $allowed)
+                ->groupEnd();
+        }
+        // 未ログイン or 未知のロール → 公開のみ
+        return $this->where('wiki_articles.view_role IS NULL', null, false);
+    }
 
     protected $validationRules = [
         'category_id' => 'required|is_natural_no_zero',

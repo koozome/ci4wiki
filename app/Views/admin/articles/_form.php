@@ -36,9 +36,10 @@
           <button type="button" class="btn btn-outline-secondary" data-md="hr"    title="水平線">&mdash;</button>
         </div>
         <div class="btn-group btn-group-sm">
-          <button type="button" class="btn btn-outline-secondary" data-md="link"  title="リンク">🔗</button>
-          <button type="button" class="btn btn-outline-secondary" data-md="image" title="画像">🖼</button>
-          <button type="button" class="btn btn-outline-secondary" data-md="table" title="テーブル">⊞</button>
+          <button type="button" class="btn btn-outline-secondary" data-md="link"     title="リンク">🔗</button>
+          <button type="button" class="btn btn-outline-secondary" data-md="image"    title="画像">🖼</button>
+          <button type="button" class="btn btn-outline-secondary" data-md="table"    title="テーブル">⊞</button>
+          <button type="button" class="btn btn-outline-secondary" data-md="collapse" title="折り畳み">▶</button>
         </div>
       </div>
 
@@ -69,6 +70,16 @@
                  pattern="[a-zA-Z0-9\-_]+"
                  placeholder="article-slug">
           <small class="form-hint">英数字・ハイフン・アンダースコアのみ</small>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">閲覧制限</label>
+          <?php $viewRole = old('view_role', $article['view_role'] ?? 'contributor') ?>
+          <select name="view_role" class="form-select">
+            <option value="">制限なし（全員閲覧可）</option>
+            <?php foreach (['contributor' => 'Contributor 以上', 'editor' => 'Editor 以上', 'moderator' => 'Moderator 以上', 'administrator' => 'Administrator のみ'] as $val => $label): ?>
+            <option value="<?= $val ?>"<?= $viewRole === $val ? ' selected' : '' ?>><?= $label ?></option>
+            <?php endforeach ?>
+          </select>
         </div>
       </div>
       <div class="card-footer">
@@ -168,7 +179,8 @@
     hr:     () => insert('\n---\n'),
     link:   () => wrap('[', '](https://)', 'リンクテキスト'),
     image:  () => wrap('![', '](https://)', '画像の説明'),
-    table:  () => insert('\n| 列1 | 列2 | 列3 |\n| --- | --- | --- |\n| セル | セル | セル |\n'),
+    table:    () => insert('\n| 列1 | 列2 | 列3 |\n| --- | --- | --- |\n| セル | セル | セル |\n'),
+    collapse: () => insert('\n{{collapse\nここに内容を入力\n}}\n'),
   };
 
   document.querySelectorAll('[data-md]').forEach(btn => {

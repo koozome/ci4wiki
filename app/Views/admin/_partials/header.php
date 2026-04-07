@@ -12,6 +12,8 @@
           </div>
         </a>
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+          <a href="<?= site_url('mypage') ?>" class="dropdown-item">マイページ</a>
+          <div class="dropdown-divider"></div>
           <a href="<?= site_url('logout') ?>" class="dropdown-item">ログアウト</a>
         </div>
       </div>

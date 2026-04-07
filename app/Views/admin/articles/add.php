@@ -13,7 +13,7 @@
 
 <form method="post" action="<?= site_url('admin/articles/add') ?>">
   <?= csrf_field() ?>
-  <?= view('admin/articles/_form', ['article' => null, 'categories' => $categories, 'categoryId' => $categoryId ?? null]) ?>
+  <?= view('admin/articles/_form', ['article' => $article ?? null, 'categories' => $categories, 'categoryId' => $categoryId ?? null]) ?>
 </form>
 
 <div class="card mt-3">

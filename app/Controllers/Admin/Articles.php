@@ -44,7 +44,19 @@ class Articles extends AdminController
             return $this->save(null);
         }
 
-        return $this->render('admin/articles/add', compact('categories', 'categoryId'));
+        // [[broken link]] 経由でのスラッグ・カテゴリー初期値
+        $article = [];
+        if (($slug = $this->request->getGet('slug')) !== null) {
+            $article['slug'] = $slug;
+        }
+        if (($catSlug = $this->request->getGet('category_slug')) !== null) {
+            $cat = model(CategoryModel::class)->where('slug', $catSlug)->first();
+            if ($cat !== null) {
+                $categoryId = (int) $cat['id'];
+            }
+        }
+
+        return $this->render('admin/articles/add', compact('categories', 'categoryId', 'article'));
     }
 
     public function edit(int $id): string|\CodeIgniter\HTTP\RedirectResponse
@@ -173,7 +185,11 @@ class Articles extends AdminController
 
     private function save(?int $id): \CodeIgniter\HTTP\RedirectResponse
     {
-        $post = $this->request->getPost(['category_id', 'slug', 'title', 'content', 'status']);
+        $post = $this->request->getPost(['category_id', 'slug', 'title', 'content', 'status', 'view_role']);
+        // 空文字は null に正規化
+        if (($post['view_role'] ?? '') === '') {
+            $post['view_role'] = null;
+        }
 
         if ($id === null) {
             $post['owner'] = auth()->user()->username;
